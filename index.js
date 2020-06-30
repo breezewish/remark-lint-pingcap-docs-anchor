@@ -16,9 +16,6 @@ function anchorResolver(realPath) {
   return () => {
     return (tree) => {
       visit(tree, ["heading"], (node) => {
-        if (node.depth === 1) {
-          return;
-        }
         const content = toString(node);
         const slug = slugger
           .slug(content)
