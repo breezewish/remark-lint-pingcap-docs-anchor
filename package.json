@@ -1,0 +1,27 @@
+{
+  "name": "remark-lint-pingcap-docs-anchor",
+  "version": "1.0.0",
+  "description": "A remark linter that checks whether referenced anchors are valid according to the anchor rule of https://docs.pingcap.com",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/breeswish/remark-lint-pingcap-docs-anchor.git"
+  },
+  "keywords": [
+    "remark"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/breeswish/remark-lint-pingcap-docs-anchor/issues"
+  },
+  "homepage": "https://github.com/breeswish/remark-lint-pingcap-docs-anchor#readme",
+  "dependencies": {
+    "didyoumean2": "^4.1.0",
+    "github-slugger": "^1.3.0",
+    "mdast-util-to-string": "^1.1.0",
+    "remark": "^12.0.0",
+    "remark-frontmatter": "^2.0.0",
+    "unified-lint-rule": "^1.0.5",
+    "unist-util-visit": "^2.0.2"
+  }
+}
