@@ -32,7 +32,14 @@ function checkAnchorCurrentFile(file, node, url, currentFileAnchors) {
 }
 
 function checkAnchorRemoteFile(file, node, url) {
-  const [realPath, anchor] = path.join(process.cwd(), url).split("#");
+  const [relativePath, anchor] = url.split("#");
+  let realPath;
+  if (path.isAbsolute(relativePath)) {
+    realPath = path.join(file.cwd, relativePath);
+  } else {
+    realPath = path.resolve(file.cwd, file.dirname, relativePath);
+  }
+
   try {
     fs.accessSync(realPath);
   } catch (err) {
@@ -73,17 +80,21 @@ function checkPingCAPDocsAnchors(ast, file) {
     if (!url) {
       return;
     }
+    if (url.indexOf("//") === 0 || url.indexOf("://") > -1) {
+      // Ignore external links
+      return;
+    }
+    if (url.indexOf(".md") === -1 || url.indexOf("#") === -1) {
+      // Ignore links not pointing to markdown file or no anchors
+      return;
+    }
+
     if (url.indexOf("#") === 0) {
       checkAnchorCurrentFile(file, node, url, currentFileAnchors);
       return;
     }
-    if (
-      url.indexOf("/") === 0 &&
-      url.indexOf(".md") > -1 &&
-      url.indexOf("#") > -1
-    ) {
-      checkAnchorRemoteFile(file, node, url);
-    }
+
+    checkAnchorRemoteFile(file, node, url);
   });
 }
 
