@@ -84,16 +84,16 @@ function checkPingCAPDocsAnchors(ast, file) {
       // Ignore external links
       return;
     }
-    if (url.indexOf(".md") === -1 || url.indexOf("#") === -1) {
-      // Ignore links not pointing to markdown file or no anchors
-      return;
-    }
 
     if (url.indexOf("#") === 0) {
       checkAnchorCurrentFile(file, node, url, currentFileAnchors);
       return;
     }
 
+    if (url.indexOf(".md") === -1 || url.indexOf("#") === -1) {
+      // Ignore links not pointing to markdown file or no anchors
+      return;
+    }
     checkAnchorRemoteFile(file, node, url);
   });
 }
