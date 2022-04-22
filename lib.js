@@ -1,39 +1,43 @@
 const visit = require("unist-util-visit");
 const remark = require("remark");
-const frontmatter = require("remark-frontmatter");
-const remark2rehype = require("remark-rehype");
-const raw = require("rehype-raw");
-const stringify = require("rehype-stringify");
-const toString = require("hast-util-to-string");
-const is = require("hast-util-is-element");
-const GithubSlugger = require("github-slugger");
+const toString = require("mdast-util-to-string");
+const slugs = require(`github-slugger`)();
 
-const slugger = new GithubSlugger();
+const reAnchor = /[^-\w\u4E00-\u9FFF]*/g; // with CJKLanguage
 
 function resolveHeadingSlugs(markdownContent) {
-  slugger.reset();
+  slugs.reset();
 
   const anchors = [];
 
   function resolve() {
     return (tree) => {
-      visit(tree, "element", (node) => {
-        if (is(node, ["h1", "h2", "h3", "h4", "h5", "h6"])) {
-          anchors.push(
-            slugger.slug(toString(node)).replace(/[^#-\w\u4E00-\u9FFF]*/g, "")
-          );
+      visit(tree, "heading", (node) => {
+        let id;
+        if (node.children.length > 0) {
+          const last = node.children[node.children.length - 1];
+          // This regex matches to preceding spaces and {#custom-id} at the end of a string.
+          // Also, checks the text of node won't be empty after the removal of {#custom-id}.
+          const match = /^(.*?)\s*\{#([\w-]+)\}$/.exec(toString(last));
+          if (match && (match[1] || node.children.length > 1)) {
+            id = match[2];
+            // Remove the custom ID from the original text.
+            if (match[1]) {
+              last.value = match[1];
+            } else {
+              node.children.pop();
+            }
+          }
         }
+        if (!id) {
+          id = slugs.slug(toString(node), false);
+        }
+        anchors.push(id.replace(reAnchor, ""));
       });
     };
   }
 
-  remark()
-    .use(frontmatter)
-    .use(remark2rehype, { allowDangerousHtml: true })
-    .use(raw)
-    .use(resolve)
-    .use(stringify)
-    .processSync(markdownContent);
+  remark().use(resolve).processSync(markdownContent);
 
   return anchors;
 }
