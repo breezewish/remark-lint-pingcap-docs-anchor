@@ -15,14 +15,17 @@ test("resolve heading slugs in markdown", () => {
 ### [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 …}'
 
 ### \`[Error 8025: entry too large, the max entry size is 6291456]\`
+
+### \`txn-entry-size-limit\` <span class="version-mark">New in v5.0</span> {#txn-entry-size-limit}
   `);
   expect(slugs).toEqual([
     "title-1",
     "title-1-1",
     "第-1-步部署-tidb-集群",
     "code-abc",
-    "allow-auto-random-从-v310-版本开始引入",
+    "allow-auto-random-span-classversion-mark从-v310-版本开始引入span",
     "sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-",
     "error-8025-entry-too-large-the-max-entry-size-is-6291456",
+    "txn-entry-size-limit",
   ]);
 });
