@@ -3,7 +3,8 @@ const remark = require("remark");
 const toString = require("mdast-util-to-string");
 const slugs = require(`github-slugger`)();
 
-const reAnchor = /[^-\w\u4E00-\u9FFF]*/g; // with CJKLanguage
+// https://github.com/pingcap/website-docs/blob/522596730ecc4e3a835467b1004524bcc0969edb/src/lib/replaceInternalHref.js#L4
+const sliceVersionMark = /span-classversion-mark|span$/g;
 
 function resolveHeadingSlugs(markdownContent) {
   slugs.reset();
@@ -32,7 +33,7 @@ function resolveHeadingSlugs(markdownContent) {
         if (!id) {
           id = slugs.slug(toString(node), false);
         }
-        anchors.push(id.replace(reAnchor, ""));
+        anchors.push(id.replace(sliceVersionMark, ""));
       });
     };
   }

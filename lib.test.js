@@ -6,7 +6,9 @@ test("resolve heading slugs in markdown", () => {
 
 # Title 1
 
-## 第 1 步：部署 TiDB 集群
+## 第 1 步：软硬件环境需求及前置检查
+
+[软硬件环境需求](/hardware-and-software-requirements.md)
 
 ## \`code-abc\`
 
@@ -21,9 +23,9 @@ test("resolve heading slugs in markdown", () => {
   expect(slugs).toEqual([
     "title-1",
     "title-1-1",
-    "第-1-步部署-tidb-集群",
+    "第-1-步软硬件环境需求及前置检查",
     "code-abc",
-    "allow-auto-random-span-classversion-mark从-v310-版本开始引入span",
+    "allow-auto-random-从-v310-版本开始引入",
     "sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-",
     "error-8025-entry-too-large-the-max-entry-size-is-6291456",
     "txn-entry-size-limit",
