@@ -19,6 +19,8 @@ test("resolve heading slugs in markdown", () => {
 ### \`[Error 8025: entry too large, the max entry size is 6291456]\`
 
 ### \`txn-entry-size-limit\` <span class="version-mark">New in v5.0</span> {#txn-entry-size-limit}
+
+### \`region-count-per-span\`
   `);
   expect(slugs).toEqual([
     "title-1",
@@ -29,5 +31,6 @@ test("resolve heading slugs in markdown", () => {
     "sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-",
     "error-8025-entry-too-large-the-max-entry-size-is-6291456",
     "txn-entry-size-limit",
+    "region-count-per-span",
   ]);
 });
